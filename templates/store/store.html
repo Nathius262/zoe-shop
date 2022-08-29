@@ -1,0 +1,162 @@
+{% extends 'base.html'%}
+{%block header%}
+Home | {{request.user}}
+{%endblock header%}
+
+{% load static %}
+
+{%block content%}
+<section class="container">
+	
+	<div class="row">
+		<div class="text-secondary top">Products</div>
+		<div class="col-lg-4 mb-2 ">
+			<div class="card shadow">
+				<img class="card-image-top" src="{% static 'img/1.png' %}">				
+				<div class="card-body">
+					<h1>Product 1</h1>
+					<p>thekbskdg ksdsdg kh sd kdsf sdfkh shdkf sdhfks dfshk</p>
+				</div>
+			</div>			
+		</div>
+
+		<div class="col-lg-4 mb-2 ">
+			<div class="card shadow">
+				<img class="card-image-top" src="{% static 'img/2.jpg' %}">				
+				<div class="card-body">
+					<h1>Product 2</h1>
+					<p>thekbskdg ksdsdg kh sd kdsf sdfkh shdkf sdhfks dfshk</p>
+				</div>
+			</div>			
+		</div>
+
+		<div class="col-lg-4 mb-2">
+			<div class="card">
+				<img class="card-image-top" src="{% static 'img/3.jpg' %}">				
+				<div class="card-body">
+					<h1>Product 3</h1>
+					<p>thekbskdg ksdsdg kh sd kdsf sdfkh shdkf sdhfks dfshk</p>
+				</div>
+			</div>			
+		</div>
+
+		<div class="col-lg-4 mb-2">
+			<div class="card">
+				<img class="card-image-top" src="{% static 'img/4.png' %}">				
+				<div class="card-body">
+					<h1>Product 4</h1>
+					<p>thekbskdg ksdsdg kh sd kdsf sdfkh shdkf sdhfks dfshk</p>
+				</div>
+			</div>			
+		</div>
+
+		<div class="col-lg-4 mb-2">
+			<div class="card">
+				<img class="card-image-top" src="{% static 'img/5.jpg' %}">				
+				<div class="card-body">
+					<h1>Product 5</h1>
+					<p>thekbskdg ksdsdg kh sd kdsf sdfkh shdkf sdhfks dfshk</p>
+				</div>
+			</div>			
+		</div>
+
+		<div class="col-lg-4 mb-2">
+			<div class="card">
+				<img class="card-image-top" src="{% static 'img/2.jpg' %}">				
+				<div class="card-body">
+					<h1>Product 6</h1>
+					<p>thekbskdg ksdsdg kh sd kdsf sdfkh shdkf sdhfks dfshk</p>
+				</div>
+			</div>			
+		</div>
+
+	</div>
+</section>
+
+<section class="bg-dark mt-5 pt-5 pb-5">
+	<div class="container mt-5 mb-5">
+		<h1 class="text-light m-5 Popular">Popular Shops</h1>
+	</div>
+	
+	<div class="container">
+		<div class="row obj mb-2 mt-5">
+			<div class="col-md-6">
+			  <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+				<div class="col p-4 d-flex flex-column position-static bg-light">
+				  <h1 class="mb-0 ">coca-kola</h3>
+				  <p class="mb-1 fs-3 text-muted"><span class="fw-bold">Description:</span> Smart, Quality, Excellent</p>
+				  <a href="#" class="stretched-link">Explore more</a>
+				</div>
+				<div class="col-auto d-none d-lg-block">
+			    	<img src="{% static 'img/1.png' %}">
+				</div>
+			  </div>
+			</div>
+
+			<div class="col-md-6">
+			  <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+				<div class="col p-4 d-flex flex-column position-static bg-light">
+				  <h1 class="mb-0 ">coca-kola</h3>
+				  <p class="mb-1 fs-3 text-muted"><span class="fw-bold">Description:</span> Smart, Quality, Excellent</p>
+				  <a href="#" class="stretched-link">Explore more</a>
+				</div>
+				<div class="col-auto d-none d-lg-block">
+			    	<img src="{% static 'img/1.png' %}">
+				</div>
+			  </div>
+			</div>
+
+			<div class="col-md-6">
+			  <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+				<div class="col p-4 d-flex flex-column position-static bg-light">
+				  <h1 class="mb-0 ">coca-kola</h3>
+				  <p class="mb-1 fs-3 text-muted"><span class="fw-bold">Description:</span> Smart, Quality, Excellent</p>
+				  <a href="#" class="stretched-link">Explore more</a>
+				</div>
+				<div class="col-auto d-none d-lg-block">
+			    	<img src="{% static 'img/1.png' %}">
+				</div>
+			  </div>
+			</div>
+			<div class="col-md-6">
+			  <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+				<div class="col p-4 d-flex flex-column position-static bg-light">
+				  <h1 class="mb-0 ">coca-kola</h3>
+				  <p class="mb-1 fs-3 text-muted"><span class="fw-bold">Description:</span> Smart, Quality, Excellent</p>
+				  <a href="#" class="stretched-link">Explore more</a>
+				</div>
+				<div class="col-auto d-none d-lg-block">
+			    	<img src="{% static 'img/1.png' %}">
+				</div>
+			  </div>
+			</div>
+			<div class="col-md-6">
+			  <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+				<div class="col p-4 d-flex flex-column position-static bg-light">
+				  <h1 class="mb-0 ">coca-kola</h3>
+				  <p class="mb-1 fs-3 text-muted"><span class="fw-bold">Description:</span> Smart, Quality, Excellent</p>
+				  <a href="#" class="stretched-link">Explore more</a>
+				</div>
+				<div class="col-auto d-none d-lg-block">
+			    	<img src="{% static 'img/1.png' %}">
+				</div>
+			  </div>
+			</div>
+			<div class="col-md-6">
+			  <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+				<div class="col p-4 d-flex flex-column position-static bg-light">
+				  <h1 class="mb-0 ">coca-kola</h3>
+				  <p class="mb-1 fs-3 text-muted"><span class="fw-bold">Description:</span> Smart, Quality, Excellent</p>
+				  <a href="#" class="stretched-link">Explore more</a>
+				</div>
+				<div class="col-auto d-none d-lg-block">
+			    	<img src="{% static 'img/1.png' %}">
+				</div>
+			  </div>
+			</div>
+		</div>
+	</div>
+
+	</div>
+</section>
+{%endblock content%}

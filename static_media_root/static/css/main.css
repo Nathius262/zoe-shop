@@ -1,0 +1,159 @@
+body{
+	font-family: Quicksand;
+}
+
+@media (max-width: 540px){
+	p, h1, h2, h3, h4, h5, h6, .card .col-4 a{
+		font-size: 20px;
+	}
+}
+
+
+@media (max-width: 470px){
+	p, h1, h2, h3, h4, h5, h6, .card .col-4 a{
+		font-size: 10px;
+	}
+}
+
+/* header start */
+.navClass{
+	color: white;
+	margin-bottom: 30px;
+}
+#navmenu{
+	font-size: 20px;
+}
+#navmenu .btn{
+	color: white;
+	background: #ff8e07;
+}
+#navmenu .btn:hover:{
+	color: white;
+	background: #ff8e07;
+	outline-color: #ff8e07;
+}
+
+#navmenu2 .btn{
+	color: white;
+	background: #ff8e07;
+}
+
+#navmenu2 .btn:hover:{
+	color: white;
+	background: #ff8e07;
+	outline-color: #ff8e07;
+}
+
+.nav_items{
+	color: #ff8e07;
+}
+.log{
+	border-radius: 10px;
+	border: 3px orange solid;
+
+}
+.log:hover {
+	background: orange;
+	color: white;
+	transition: 0.8s;
+}
+.log a:hover {
+	color: white;
+}
+@media (max-width: 980px){
+	.log{
+		border: 0;
+	}
+	.log:hover {
+		background: #f3f1f1;
+		color: black;
+		transition: 0;
+	}
+	.log a:hover {
+		color: black;
+	}
+}
+
+/* header end */
+
+
+/* body start */
+/* store start */
+.top{
+	font-size: 80px;
+	font-weight: bold;
+	font-family: Garamond;
+	margin-top: 50px;
+}
+.card-body p{
+	color: #6c757d;
+	font-weight: bolder;
+}
+.card-body h1{
+	color: #ff8e07;
+	font-weight: lighter;
+}
+.Popular{
+	font-size: 80px;
+	font-family: Garamond;
+}
+
+.obj a{
+	color: #ff8e07;
+}
+/* store end */
+
+/* cart start */
+.cart_item_img{
+	width: 80px;
+}
+
+@media (max-width: 540px){
+	.row .align-items-center h4{
+		font-size: 20px;
+	}
+	.row .align-items-center h2{
+		font-size: 20px;
+	}
+}
+
+
+@media (max-width: 470px){
+	.row .align-items-center h4{
+		font-size: 10px;
+	}
+	.row .align-items-center h2{
+		font-size: 10px;
+	}
+}
+
+/* cart end */
+
+/* body end */
+
+/* footer start */
+#btn-back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+  background: #ff8e07;
+}
+
+.footer{
+	box-shadow: 0 -.20rem 1rem rgba(0,0,0,.15)!important;
+}
+.footer-text{
+	color: #ff8e07;
+	font-weight: bold;
+}
+
+.footer p{
+	font-size: 25px;
+}
+.footer li{
+	font-size: 25px;
+}
+
+
+/* footer end */

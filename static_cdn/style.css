@@ -1,0 +1,15 @@
+body{
+	background: #ebebeb;
+}
+body::before{
+	display: block;
+	content: '';
+	height: 30px;
+	max-width: 1300px
+}
+
+.p{
+	background: white;
+	color: orange;
+	font-size: 100px;
+}

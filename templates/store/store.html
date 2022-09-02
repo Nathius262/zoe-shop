@@ -9,67 +9,26 @@ Home | {{request.user}}
 <section class="container">
 	
 	<div class="row">
-		<div class="text-secondary top">Products</div>
-		<div class="col-lg-4 mb-2 ">
+		<div class="text-secondary top">Products </div>
+
+		{% for product in products %}
+		<div class="col-lg-4 mb-4">
 			<div class="card shadow">
-				<img class="card-image-top" src="{% static 'img/1.png' %}">				
+				<img class="card-image-top" src="{{product.product_image_url}}">				
 				<div class="card-body">
-					<h1>Product 1</h1>
-					<p>thekbskdg ksdsdg kh sd kdsf sdfkh shdkf sdhfks dfshk</p>
+					<h3 class="fw-bold">{{product.name|truncatechars:50}}</h3>
+					<div class="card-text mt-4 fs-4 d-flex justify-content-between align-items-center">
+						<div class="d-flex">
+							<button data-product="{{product.id}}" data-action="add" class="btn fs-5 add_btn update_cart">Add to cart</button>
+							<a href="#" class="btn fs-5 add_btn">view</a>
+						</div>
+						<p>${{product.price|floatformat:2}}</p>
+					</div>					
 				</div>
 			</div>			
 		</div>
-
-		<div class="col-lg-4 mb-2 ">
-			<div class="card shadow">
-				<img class="card-image-top" src="{% static 'img/2.jpg' %}">				
-				<div class="card-body">
-					<h1>Product 2</h1>
-					<p>thekbskdg ksdsdg kh sd kdsf sdfkh shdkf sdhfks dfshk</p>
-				</div>
-			</div>			
-		</div>
-
-		<div class="col-lg-4 mb-2">
-			<div class="card">
-				<img class="card-image-top" src="{% static 'img/3.jpg' %}">				
-				<div class="card-body">
-					<h1>Product 3</h1>
-					<p>thekbskdg ksdsdg kh sd kdsf sdfkh shdkf sdhfks dfshk</p>
-				</div>
-			</div>			
-		</div>
-
-		<div class="col-lg-4 mb-2">
-			<div class="card">
-				<img class="card-image-top" src="{% static 'img/4.png' %}">				
-				<div class="card-body">
-					<h1>Product 4</h1>
-					<p>thekbskdg ksdsdg kh sd kdsf sdfkh shdkf sdhfks dfshk</p>
-				</div>
-			</div>			
-		</div>
-
-		<div class="col-lg-4 mb-2">
-			<div class="card">
-				<img class="card-image-top" src="{% static 'img/5.jpg' %}">				
-				<div class="card-body">
-					<h1>Product 5</h1>
-					<p>thekbskdg ksdsdg kh sd kdsf sdfkh shdkf sdhfks dfshk</p>
-				</div>
-			</div>			
-		</div>
-
-		<div class="col-lg-4 mb-2">
-			<div class="card">
-				<img class="card-image-top" src="{% static 'img/2.jpg' %}">				
-				<div class="card-body">
-					<h1>Product 6</h1>
-					<p>thekbskdg ksdsdg kh sd kdsf sdfkh shdkf sdhfks dfshk</p>
-				</div>
-			</div>			
-		</div>
-
+		{% endfor %}
+		
 	</div>
 </section>
 

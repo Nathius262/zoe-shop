@@ -14,30 +14,35 @@ checkout
 	<div class="container order-last mb-5">
 		<div class="card">
 			<div class="col-4">
-				<a href="#" class="d-flex btn btn-outline-dark"><img width="30" src="{% static 'img/021-back.png' %}"> continue shopping</a>
+				<a href="{% url 'store:store' %}" class="d-flex align-items-center btn btn-outline-dark"><img width="30" src="{% static 'img/arrow_back.png' %}"> continue shopping</a>
 			</div>
 
 			<hr>
 
-			<h2 class="container nav_items">ORDER SUMMRY</h2>
+			<h2 class="container">ORDER SUMMRY</h2>
 			<hr>
 
 
 			<div class="container">
-				<div class="row align-items-center text-center mb-5">
+				{% for items in item %}
+				<div class="row align-items-center text-center mb-3">
+				
 					<div class="col col-lg-4 d-none d-md-flex">
-						<img class="cart_item_img" src="{% static 'img/2.jpg' %}">
+						<img class="cart_item_img" src="{{items.product.product_image_url}}">
 					</div>						
-					<h4 class="col">product 1</h4>
-					<h4 class="col">$23</h4>
-					<h4 class="col">4</h4>
-					<h4 class="col">$12.58</h4>
+					<h5 class="col">{{items.product.name}}</h5>
+					<h5 class="col">${{items.product.price}}</h5>
+					<h5 class="col">{{items.quantity}}</h5>
+					<h5 class="col">${{items.get_total}}</h5>
+					
 				</div>
+				<hr>
+				{% endfor %}
 			</div>
 
 			<div class="container nav_items d-block d-md-flex justify-content-between">
-				<h2>Items: 3</h2>
-				<h2>Total: $124</h2>
+				<h2>Items: {{order.get_cart_items}}</h2>
+				<h2>Total: ${{order.get_cart_total | floatformat:2}}</h2>
 			</div>
 		</div>
 	</div>

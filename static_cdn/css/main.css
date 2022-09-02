@@ -4,14 +4,14 @@ body{
 
 @media (max-width: 540px){
 	p, h1, h2, h3, h4, h5, h6, .card .col-4 a{
-		font-size: 40px;
+		font-size: 20px;
 	}
 }
 
 
 @media (max-width: 470px){
 	p, h1, h2, h3, h4, h5, h6, .card .col-4 a{
-		font-size: 30px;
+		font-size: 10px;
 	}
 }
 
@@ -76,33 +76,11 @@ body{
 
 .cart_img{
 	position: relative;
-	width: 100px;	
-	transition: transform 0.8s;
+	width: 100px;
+	border: 2px solid black;
 }
-
-.cart_img :hover{
-	transform: translateY(5px);
-}
-
-.cart_img img{
-	transition: transform 0.8s;
-}
-
-.cart_img img:hover{
-	transform: translateX(9px);
-}
-
 .cart_img_txt{
 	position: absolute;
-	width: 100px;
-	transition: 0.8s;
-}
-
-.carttxt{
-	background: orange;
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
 }
 
 /* header end */

@@ -13,14 +13,14 @@ cart
 	<div class="col-lg-12">
 		<div class="card p-5 ">
 			<div class="col-4 col-lg-2">
-				<a href="#" class="d-flex btn btn-outline-dark"><img width="30" src="{% static 'img/021-back.png' %}"> continue shopping</a>
+				<a href="{% url 'store:store' %}" class="d-flex align-items-center btn btn-outline-dark"><img width="30" src="{% static 'img/arrow_back.png' %}"> continue shopping</a>
 			</div>
 
 			<br>
 			<div class="justify-content-center align-items-center">
 				<div class="d-block justify-content-between d-md-flex">
-					<div class="m-4 m-md-0 text-center"><h1>Items: <strong>3</strong></h1></div>
-					<div class="m-4 m-md-0 text-center"><h1>Totals: <strong>$12</strong></h1></div>
+					<div class="m-4 m-md-0 text-center"><h1>Items: <strong>{{order.get_cart_items}}</strong></h1></div>
+					<div class="m-4 m-md-0 text-center"><h1>Totals: <strong>${{order.get_cart_total}}</strong></h1></div>
 					<div class="m-4 m-md-0 text-center">
 						<a class="btn fs-2 btn-success" href="{% url 'store:checkout' %}">checkout</a>
 					</div>
@@ -42,39 +42,45 @@ cart
 
 					<hr class="mb-5">
 
-					<div class="row align-items-center text-center mb-5">
+					{% for items in item %}
+					<div id="cartResponse" class="row align-items-center text-center mb-5">
 						<div class="col col-lg-4 d-none d-md-flex">
-							<img class="cart_item_img" src="{% static 'img/2.jpg' %}">
+							<img class="cart_item_img" src="{{items.product.product_image_url}}">
 						</div>						
-						<h4 class="col">product 1</h4>
-						<h4 class="col">$23</h4>
-						<h4 class="col">4</h4>
-						<h4 class="col">$12.58</h4>
+						<h4 class="col">{{items.product.name}}</h4>
+						<h4 class="col">${{items.product.price |floatformat:2}}</h4>
+						<h4 class="col">
+							<div class="d-flex justify-content-center align-items-center">
+								{{items.quantity}}
+								<div class="d-grid">
+									<button data-product="{{items.product.id}}" data-action="add" class="update_cart btn p-0 border-0"><img width="25" src="{% static 'img/arrow_up.png' %}"></button>
+									<button data-product="{{items.product.id}}" data-action="remove" class="update_cart btn p-0 border-0"><img width="25" src="{% static 'img/arrow_down.png' %}"></button>
+								</div>
+							</div>
+						</h4>
+						<h4 class="col">${{items.get_total |floatformat:2}}</h4>
 					</div>
-
-					<div class="row align-items-center text-center mb-5">
-						<div class="col col-lg-4 d-none d-md-flex">
-							<img class="cart_item_img" src="{% static 'img/1.png' %}">
-						</div>						
-						<h4 class="col">product 1</h4>
-						<h4 class="col">$23</h4>
-						<h4 class="col">4</h4>
-						<h4 class="col">$12.58</h4>
-					</div>
-
-					<div class="row align-items-center text-center mb-5">
-						<div class="col col-lg-4 d-none d-md-flex">
-							<img class="cart_item_img" src="{% static 'img/4.png' %}">
-						</div>						
-						<h4 class="col">product 1</h4>
-						<h4 class="col">$23</h4>
-						<h4 class="col">4</h4>
-						<h4 class="col">$12.58</h4>
-					</div>
-
+					{% endfor %}
+					
 				</div>
 			</div>
 		</div>
 	</div>
+	<script>
+		
+		//alert(window.location);
+		window.addEventListener('DOMContentLoaded', function(){		
+			cartResponse()
+		});
+		
+		/*
+		setInterval(function(){
+			cartResponse()
+		}, 2000);
+		*/
+	</script>
 </div>
+
+
+
 {%endblock content%}

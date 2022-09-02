@@ -12,6 +12,10 @@
 	{% load static %}
 	<link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+	<script type="text/javascript">
+		var user = "{{request.user}}"
+		var csrf_token = "{{csrf_token}}"
+	</script>
 
 </head>
 <body class="bg-light">
@@ -22,21 +26,27 @@
 			<h2 class="me-5 nav_items">Zoe Shop</h2>
 
 
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
-				<span class="navbar-toggler-icon"></span>
-			</button>
+			<div class="d-flex align-items-center">
+				<button style="background-color: #e4e3e3;" class="navbar-toggler navbar-light" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<a style="color: white;" href="{% url 'store:cart' %}" class="cart_img border-0 p-0 m-0 d-flex d-lg-none justify-content-center">
+			    	<img class="" width="80" src="{% static 'img/cart.png' %}">
+			    	<div class="cart_img_txt">
+			    		<div id="cart1" class="carttxt text-center offset-7 pt-1 fw-bold fs-4"></div>
+			    	</div>
+			    </a>
+			</div>
 
 			<div class="collapse navbar-collapse" id="navmenu">
 				<form method="get" class="d-none ms-4 mt-sm-3 d-lg-flex" role="search">
 					<input name="q" class="form-control me-2" id="1d_q" type="search" placeholder="Search Products" aria-label="Search">
 					<button class="btn" type="submit">Search</button>
 				</form>
-				<ul class="navbar-nav ms-auto">
+				<ul class="navbar-nav ms-auto align-items-start align-items-lg-center">
 					<li class="nav-item">
 					<a href="{% url 'store:store' %}" class="nav-link nav_items">Home</a>
-					</li>
-					<li class="nav-item">
-					<a href="{% url 'store:cart' %}" class="nav-link nav_items">Cart</a>
 					</li>
 					<li class="nav-item">
 					<a href="{% url 'store:checkout' %}" class="nav-link nav_items">Checkout</a>
@@ -51,12 +61,21 @@
 					</li>
 					<li class="nav-item mx-0 mx-lg-2 log">
 					    <a class="nav-link nav_items" href="#">Sign in</a>
-					</li>
+					</li>				
 					{% endif %}
+					<li class="nav-item mx-0 mx-lg-2">
+					   	<a style="color: white;" href="{% url 'store:cart' %}" class="cart_img border-0 p-0 m-0 d-none d-lg-flex justify-content-center">
+					    	<img class="" width="80" src="{% static 'img/cart.png' %}">
+					    	<div class="cart_img_txt">
+					    		<div id="cart2" class="carttxt text-center offset-7 pt-1 fw-bold fs-4"></div>
+					    	</div>
+					    </a>
+					</li>
 					
 				</ul>
 			
-				</div>
+			</div>
+
 		</div>		
 	</nav>
 	<nav class="container" id="navmenu2">
@@ -171,5 +190,7 @@
 
 
 	<script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+	<script src="{% static '/js/jquery-2.1.1.min.js' %}"></script>
+	<script type="text/javascript" src="{% static '/js/cart.js' %}"></script>
 </body>
 </html>

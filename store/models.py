@@ -16,6 +16,17 @@ def product_image_location(instance, filename):
         os.remove(full_path)
     return file_path
 
+
+def more_img_product(instance, filename):
+	file_path = 'product/{product_id}/{img_porduct}_product.jpeg'.format(
+	    product_id=str(instance.product_attr.id), img_porduct=str(instance.id), filename=filename
+	)
+	full_path = os.path.join(settings.MEDIA_ROOT, file_path)
+	if os.path.exists(full_path):
+	    os.remove(full_path)
+	return file_path
+
+
 # Create your models here.
 class Customer(models.Model):
 	"""docstring for Customer"""
@@ -45,6 +56,26 @@ class Product(models.Model):
 			url = ""
 
 		return url
+
+
+class ProductImage(models.Model):
+	"""docstring for ProductImage"""
+	product_attr = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
+	img_porduct = models.ImageField(upload_to=more_img_product, null=True, blank=True)
+	date = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return f'{self.id}'
+
+	@property
+	def product_image_url(self):
+		try:
+			url = self.img_porduct.url
+		except:
+			url = ""
+
+		return url
+		
 	
 
 class Order(models.Model):

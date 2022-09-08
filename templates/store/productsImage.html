@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>crop images</title>
+	
+	{% load static %}
+	<link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+
+	<script src="{% static '/js/jquery-2.1.1.min.js' %}"></script>
+	<script src="{% static '/js/cropper.js' %}"></script>
+	<link type="text/css" rel="stylesheet" href="{% static 'css/cropper.css' %}">
+	<script type="text/javascript" src="{% static '/js/jquery-cropper.js' %}"></script>
+
+
+	<style>
+		img{
+			max-width: 100%;
+		}
+	</style>
+</head>
+<body>
+
+	<div class="container d-flex justify-content-center mt-5">
+		<img id="image" src="{{images.product_image_url}}">
+	</div>
+
+	<script type="text/javascript" src="{% static '/js/crop_image.js' %}"></script>
+</body>
+</html>

@@ -11,10 +11,22 @@
 	</title>
 	{% load static %}
 	<link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+
+	<!-- cropper js-->
+	<script src="{% static '/js/jquery-2.1.1.min.js' %}"></script>
+	<script src="{% static '/js/cropper.js' %}"></script>
+	<link type="text/css" rel="stylesheet" href="{% static 'css/cropper.css' %}">
+	<script type="text/javascript" src="{% static '/js/jquery-cropper.js' %}"></script>
+
+
+	<!-- custom css--->
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
 	<script type="text/javascript">
 		var user = "{{request.user}}"
 		var csrf_token = "{{csrf_token}}"
+		var arrow_up ="{% static 'img/arrow_up.png' %}"
+		var arrow_down = "{% static 'img/arrow_down.png' %}"
 	</script>
 
 </head>
@@ -105,34 +117,10 @@
 		class="btn btn-floating btn-lg shadow"
 		id="btn-back-to-top"
 		>
-		<img width="30" src="{% static 'img/toTop.png' %}">
+		<img width="30" src="{% static 'img/toTop.png' %}" alt="to top">
 	</button>
 	<script>
-		//Get the button
-		let mybutton = document.getElementById("btn-back-to-top");
 
-		// When the user scrolls down 20px from the top of the document, show the button
-		window.onscroll = function () {
-			scrollFunction();
-		};
-
-		function scrollFunction() {
-			if (
-				document.body.scrollTop > 20 ||
-				document.documentElement.scrollTop > 20
-			) {
-				mybutton.style.display = "block";
-			} else {
-				mybutton.style.display = "none";
-			}
-		}
-		// When the user clicks on the button, scroll to the top of the document
-		mybutton.addEventListener("click", backToTop);
-
-		function backToTop() {
-			document.body.scrollTop = 0;
-			document.documentElement.scrollTop = 0;
-		}
 	</script>
 
 	<section class="bg-light text-dark mt-5">
@@ -190,7 +178,6 @@
 
 
 	<script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
-	<script src="{% static '/js/jquery-2.1.1.min.js' %}"></script>
 	<script type="text/javascript" src="{% static '/js/cart.js' %}"></script>
 </body>
 </html>

@@ -26,10 +26,22 @@ def store(request):
 
 
 def cart(request):
-	return render(request, "store/cart.html")
+	if request.user.is_authenticated:
+		customer = request.user.customer
+		order, created = Order.objects.get_or_create(customer=customer)
+		item = order.orderitem_set.all()
+	else:
+		item = []
+		order = {'get_cart_total':0, 'get_cart_items':0}
+
+	context = {
+		'item':item,
+		'order':order
+	}
+	return render(request, "store/cart.html", context)
 
 # cart api call
-def cart_response(request):
+def data_obj(request):
 
 	if request.user.is_authenticated:
 		customer = request.user.customer
@@ -38,22 +50,32 @@ def cart_response(request):
 	else:
 		item = []
 		order = {'get_cart_total':0, 'get_cart_items':0}
-
-
-	for items in item:
-		context = {}
-		obj = {f'{items.product.id}': items.product.name}
-		context.update(obj)
-		print(context)
-	print(context)
-
-	data = {
-		'item':list(item.values()),
-		'order_item': order.get_cart_items,
-		'order_total': order.get_cart_total,
-	}
 	
-	return JsonResponse(data,  content_type='application/json', safe=False)
+	a= {}
+	data=[]
+	for items in item:
+		a= { 
+			'productId':items.product.id,
+			'productName': items.product.name,
+			'productPrice':items.product.price,
+			'productImage':items.product.product_image_url,
+			'quantity':items.quantity,
+			'price':items.get_total,
+		}
+		data.append(a)
+		a.update(a)
+			
+
+	item = item.first()
+	b = {
+		'quantityTotal': order.get_cart_items,
+		'priceTotal': order.get_cart_total,
+	}
+	data.append(b)
+	return data
+
+def cart_response(request):	
+	return JsonResponse(data_obj(request),  content_type='application/json', safe=False)
 
 def checkout(request):
 	if request.user.is_authenticated:
@@ -93,3 +115,15 @@ def updateCartItem(request):
 	if orderItem.quantity <= 0:
 		orderItem.delete()
 	return JsonResponse('Success', safe=False)
+
+
+def productsImage(request):
+	# products = Product.objects.all().filter(id=2)
+
+	images = ProductImage.objects.get(pk=1)
+	print(images)
+
+	context = {
+		'images':images
+	}
+	return render(request, "store/productsImage.html", context)

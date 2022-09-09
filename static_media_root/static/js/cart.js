@@ -1,15 +1,13 @@
-//cart start
+//gobal function
 
-function cartResponse(){
+function cartResponse(obj_url){
 	$(document).ready(function(){
 	
 		console.log('Retreiving data...')
-
-
 		setInterval(function(){
 			$.ajax({
 				type:'GET',
-				url: '/cart_response/',
+				url: cart_response_url,
 				success: function(response){
 
 					var cartRep = document.getElementById('cartRep')
@@ -27,29 +25,45 @@ function cartResponse(){
 					for (var i=0; i < (response.length-1); i++){
 						var temp = response[i];
 						var img = temp.productImage
-						
+						var obj
 
-						//display_image(img, 276, 110, temp.productName);
-						var obj =
-						 `
-								<div class="row align-items-center text-center mb-5 border">
-									<div class="col col-lg-4 d-none d-md-flex">
-										<img class="cart_item_img" src="`+img+`" alt="`+temp.productName+`">
-									</div>						
-									<h4 class="col">`+temp.productName+`</h4>
-									<h4 class="col">$`+temp.productPrice+`</h4>
-									<h4 class="col">
-										<div class="d-flex justify-content-center align-items-center">
-											`+temp.quantity+`
-											<div class="d-grid">
-												<button class="btn p-0 update_cart border-0" data-product="`+temp.productId+`" data-action="add"><img width="25" src=`+arrow_up+` alt=`+arrow_up+`></button>
-												<button class="btn p-0 update_cart border-0" data-product="`+temp.productId+`" data-action="remove"><img width="25" src=`+arrow_down+` alt=`+arrow_down+`></button>
+						if (cart_url == obj_url){
+							obj =
+								`
+									<div class="row align-items-center text-center mb-5 border">
+										<div class="col col-lg-4 d-none d-md-flex">
+											<img class="cart_item_img" src="`+img+`" alt="`+temp.productName+`">
+										</div>						
+										<h4 class="col">`+temp.productName+`</h4>
+										<h4 class="col">$`+temp.productPrice+`</h4>
+										<h4 class="col">
+											<div class="d-flex justify-content-center align-items-center">
+												`+temp.quantity+`
+												<div class="d-grid">
+													<button class="btn p-0 update_cart border-0" data-product="`+temp.productId+`" data-action="add"><img width="25" src=`+arrow_up+` alt=`+arrow_up+`></button>
+													<button class="btn p-0 update_cart border-0" data-product="`+temp.productId+`" data-action="remove"><img width="25" src=`+arrow_down+` alt=`+arrow_down+`></button>
+												</div>
 											</div>
-										</div>
-									</h4>
-									<h4 class="col">$`+temp.price+`</h4>
-								</div>
-							`	
+										</h4>
+										<h4 class="col">$`+temp.price+`</h4>
+									</div>
+								`	
+						}else if (checkout_url == obj_url){
+							obj =
+								`
+									<div class="row align-items-center text-center mb-5">
+										<div class="col col-lg-4 d-none d-md-flex">
+											<img class="cart_item_img" src="`+img+`" alt="`+temp.productName+`">
+										</div>						
+										<h5 class="col">`+temp.productName+`</h5>
+										<h5 class="col">$`+temp.productPrice+`</h5>
+										<h5 class="col">`+temp.quantity+`</h5>
+										<h5 class="col">$`+temp.price+`</h5>
+									</div>
+								`	
+						}
+
+						
 
 
 						$('#cartRep').append(obj)						
@@ -58,20 +72,7 @@ function cartResponse(){
 
 
 					var	updatecartbtn = document.getElementsByClassName('update_cart')
-					for (var i=0; i < updatecartbtn.length; i++) {
-						updatecartbtn[i].addEventListener('click', function(){
-							var productId = this.dataset.product
-							var action = this.dataset.action
-							console.log('productId: ', productId, 'action: ', action)
-
-							console.log('user:', user)
-							if(user=='AnonymousUser'){
-								console.log('not logged in')
-							}else{
-								updateUserOrder(productId, action);
-							}
-						})
-					}
+					updatecart();					
 				},
 
 			})
@@ -82,32 +83,14 @@ function cartResponse(){
 	})
 }
 
-//caet end
-
-
 var updatecartbtn = document.getElementsByClassName('update_cart');
-
-for (var i=0; i < updatecartbtn.length; i++) {
-	updatecartbtn[i].addEventListener('click', function(){
-		var productId = this.dataset.product
-		var action = this.dataset.action
-		console.log('productId: ', productId, 'action: ', action)
-
-		console.log('user:', user)
-		if(user=='AnonymousUser'){
-			console.log('not logged in')
-		}else{
-			updateUserOrder(productId, action);
-			//cartReload();
-		}
-	})
-}
+updatecart();
 
 // add items to cart
 function updateUserOrder(productId, action){
 	console.log('sending data...')
 
-	var url = '/update_cart/'
+	var url = update_cart_url
 
 	fetch(url, {
 		method:'POST',
@@ -127,23 +110,66 @@ function updateUserOrder(productId, action){
 	});
 };
 
-//}
+
+function updatecart(){
+	for (var i=0; i < updatecartbtn.length; i++) {
+	updatecartbtn[i].addEventListener('click', function(){
+		var productId = this.dataset.product
+		var action = this.dataset.action
+		console.log('productId: ', productId, 'action: ', action)
+
+		console.log('user:', user)
+		if(user=='AnonymousUser'){
+			addCookieItem(productId, action);
+		}else{
+			updateUserOrder(productId, action);
+		}
+	})
+}
+}
 
 
+// AnonymousUsers
+function addCookieItem(productId, action){
+	console.log('not authenticated')
+
+	if (action == 'add'){
+		if (cart[productId] == undefined){
+			cart[productId] = {'quantity':1}
+		}else{
+			cart[productId]['quantity'] += 1
+		}
+	}
+
+	if (action == 'remove'){ 
+		cart[productId]['quantity'] -= 1
+
+		if (cart[productId]['quantity'] <= 0){
+			console.log('item deleted')
+			delete cart[productId];
+		}
+	}
+
+	
+	document.cookie = 'cart='+JSON.stringify(cart) + ";domain=;path=/"
+	console.log('Cart:', cart)
+}
+
+// AnonymousUsers end
+
+//gobal function end
 
 $(document).ready(function(){
 
 	setInterval(function(){
 		$.ajax({
 			type:'GET',
-			url: "/cartlist/",
+			url: cartlist_url,
 			success: function(response){
 				var cart1 = document.getElementById('cart1');
 				var cart2 = document.getElementById('cart2');
 
 				var json = response['get_cart_items'];
-
-				//console.log(json)
 
 				cart1.innerHTML = json;
 
@@ -157,6 +183,86 @@ $(document).ready(function(){
 
 });
 
+// checkout start
+
+function shippingData(shipping, total){
+
+	if (shipping == 'False'){
+		document.getElementById('shipping_items').innerHTML = ''
+		console.log(shipping)
+	}
+
+	if (user != 'AnonymousUser'){
+		document.getElementById('user_info').innerHTML = '';
+	}
+
+	if (shipping == 'False' && user != 'AnonymousUser'){
+		document.getElementById('form_wrapper').style.display = "none";
+		document.getElementById('paypalbtn').style.display = "block";
+	}
+
+
+	var form =document.getElementById('form')
+	form.addEventListener('submit', function(e){
+		e.preventDefault()
+		console.log('form submitted...')
+		document.getElementById('formbtn').style.display ='none'
+		document.getElementById('paypalbtn').style.display = 'block'
+	})
+
+	document.getElementById('make_pay').addEventListener('click', function(e){
+		submitFormData()
+	})
+
+	function submitFormData(){
+		console.log('Your payment has been submitted ')
+
+		var userFormInfo = {
+			'name': null,
+			'email':null,
+			'total':total,
+		}
+
+		var shippingInfo = {
+			'address':null,
+			'city':null,
+			'state':null,
+			'zipcode':null,
+		}
+
+		if (shipping != 'False'){
+			shippingInfo.address = form.address.value
+			shippingInfo.city = form.city.value
+			shippingInfo.state = form.state.value
+			shippingInfo.zipcode = form.zipcode.value
+
+		}
+
+		if (user == 'AnonymousUser'){
+			userFormInfo.name = form.name.value
+			userFormInfo.email = form.email.value
+		}
+
+		url = process_order_url
+
+		fetch(url, {
+			method:'POST',
+			headers:{
+				'Content-Type':'application/json',
+				'X-CSRFToken':csrf_token,
+			},
+			body:JSON.stringify({'form':userFormInfo, 'shipping':shippingInfo})
+		})
+		.then((response) => response.json())
+		.then((data) => {
+			console.log('Success: ', data)
+			alert('Tansaction completed')
+			window.location.href = home_url
+		})
+	}
+}
+
+//checkout end
 
 //footer start
 

@@ -3,6 +3,8 @@ from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 import json
 from .models import *
+from .utils import data_obj
+import datetime
 
 
 # Create your views here.
@@ -10,14 +12,29 @@ def cart_item(request):
 	context = {}
 	if request.user.is_authenticated:
 		customer = request.user.customer
-		order = Order.objects.get(customer=customer, complete=False)
-		
+		order, created = Order.objects.get_or_create(customer=customer, complete=False)
+	
 		data={
-			"get_cart_items":order.get_cart_items
-		}
+					"get_cart_items":order.get_cart_items
+				}
+	else:
+		try:
+			cart = json.loads(request.COOKIES['cart'])
+		except:
+			cart = {}
+
+		cart_item = 0
+		for i in cart:
+			cart_item = cart_item + cart[i]["quantity"]
+		data={
+				"get_cart_items":cart_item
+			}
+		
+		
 	return JsonResponse(data, content_type='application/json', safe=False)
 
 def store(request):
+	
 	products = Product.objects.all()
 	context = {
 		'products':products
@@ -25,54 +42,10 @@ def store(request):
 	return render(request, "store/store.html", context)
 
 
-def cart(request):
-	if request.user.is_authenticated:
-		customer = request.user.customer
-		order, created = Order.objects.get_or_create(customer=customer)
-		item = order.orderitem_set.all()
-	else:
-		item = []
-		order = {'get_cart_total':0, 'get_cart_items':0}
+def cart(request):	
+	return render(request, "store/cart.html")
 
-	context = {
-		'item':item,
-		'order':order
-	}
-	return render(request, "store/cart.html", context)
 
-# cart api call
-def data_obj(request):
-
-	if request.user.is_authenticated:
-		customer = request.user.customer
-		order, created = Order.objects.get_or_create(customer=customer, complete=False)
-		item = order.orderitem_set.all()
-	else:
-		item = []
-		order = {'get_cart_total':0, 'get_cart_items':0}
-	
-	a= {}
-	data=[]
-	for items in item:
-		a= { 
-			'productId':items.product.id,
-			'productName': items.product.name,
-			'productPrice':items.product.price,
-			'productImage':items.product.product_image_url,
-			'quantity':items.quantity,
-			'price':items.get_total,
-		}
-		data.append(a)
-		a.update(a)
-			
-
-	item = item.first()
-	b = {
-		'quantityTotal': order.get_cart_items,
-		'priceTotal': order.get_cart_total,
-	}
-	data.append(b)
-	return data
 
 def cart_response(request):	
 	return JsonResponse(data_obj(request),  content_type='application/json', safe=False)
@@ -80,17 +53,80 @@ def cart_response(request):
 def checkout(request):
 	if request.user.is_authenticated:
 		customer = request.user.customer
-		order, created = Order.objects.get_or_create(customer=customer)
+		order, created = Order.objects.get_or_create(customer=customer, complete=False)
 		item = order.orderitem_set.all()
 	else:
-		item = []
-		order = {'get_cart_total':0, 'get_cart_items':0}
+		try:
+			cart = json.loads(request.COOKIES['cart'])
+		except:
+			cart = {}
+
+		total = 0	
+		order = {'get_cart_total':0, 'get_cart_items':0, 'shipping': False}
+		item = []	
+		for i in cart:
+			try:
+				product = Product.objects.get(id=i)
+				total = (product.price * cart[i]["quantity"])
+
+				order['get_cart_total'] += total
+				order['get_cart_items'] += cart[i]["quantity"]
+
+				items = {
+					'product':{
+						'id':product.id,
+						'name':product.name,
+						'price':product.price,
+						'product_image_url':product.product_image_url,
+					},
+					'quantity': cart[i]["quantity"],
+					'get_total': total,
+				}
+
+				item.append(items)
+
+				if product.digital ==False:
+					order['shipping'] = True
+			except:
+				pass
 
 	context = {
 		'item':item,
 		'order':order
 	}
 	return render(request, "store/checkout.html", context)
+
+def processOrder(request):
+	transaction_id = datetime.datetime.now().timestamp()
+	data = json.loads(request.body)
+
+	if request.user.is_authenticated:
+		customer = request.user.customer
+		order, created = Order.objects.get_or_create(customer=customer, complete=False)
+		total = data['form']['total']
+		order.transaction_id =transaction_id
+
+
+
+		if str(total) == str(order.get_cart_total):
+			"""the reason why the condition is a string is because they are returning the same value but different format. unable to figure how to do that for now! """
+			order.complete = True
+
+		order.save()
+
+		if order.shipping == True:
+			ShippingAddress.objects.create(
+				customer=customer,
+				order=order,
+				address = str(data['shipping']['address']),
+				city = str(data['shipping']['city']),
+				state = str(data['shipping']['state']),
+				zipcode = str(data['shipping']['zipcode'])
+			)
+
+	else:
+		print('user not logged in')
+	return JsonResponse('payment complete', safe=False)
 
 
 def updateCartItem(request):

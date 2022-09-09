@@ -12,21 +12,60 @@
 	{% load static %}
 	<link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
 
-	<!-- cropper js-->
+	<!-- jquery js-->
 	<script src="{% static '/js/jquery-2.1.1.min.js' %}"></script>
-	<script src="{% static '/js/cropper.js' %}"></script>
-	<link type="text/css" rel="stylesheet" href="{% static 'css/cropper.css' %}">
-	<script type="text/javascript" src="{% static '/js/jquery-cropper.js' %}"></script>
 
 
 	<!-- custom css--->
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 
+	<!-- scripts global variables---->
 	<script type="text/javascript">
 		var user = "{{request.user}}"
+
+		// get csrf_token
 		var csrf_token = "{{csrf_token}}"
+
+		//get data url
+		var home_url = "{% url 'store:store' %}"
+		var cart_url = "{% url 'store:cart' %}"
+		var checkout_url = "{% url 'store:checkout' %}"
+		var cart_response_url = "{% url 'store:cart_response' %}"
+		var update_cart_url = "{% url 'store:update_cart' %}"
+		var cartlist_url = "{% url 'store:cartlist' %}"
+		var process_order_url = "{% url 'store:process_order' %}"
+
 		var arrow_up ="{% static 'img/arrow_up.png' %}"
 		var arrow_down = "{% static 'img/arrow_down.png' %}"
+
+		//get cookie
+
+		function getCookie(name){
+			// Split cookie string and get all individual name=value pairs in an arry
+			var cookieArr = document.cookie.split(";");
+
+			//loop through the array elements
+			for (var i = 0; i < cookieArr.length; i++) {
+				var cookiePair = cookieArr[i].split("=");
+
+				/* removing whitespace at the beginning of the cookie name and compare it with the given string */
+				if (name == cookiePair[0].trim()){
+					return decodeURIComponent(cookiePair[1]);
+				}
+			}
+
+			// return null if not found
+			return null;
+		}
+
+		var cart =  JSON.parse(getCookie('cart'))
+
+		if (cart == undefined){
+			cart = {}
+			console.log('was created successfully')
+			document.cookie = 'cart='+JSON.stringify(cart)+";domain=;path=/"
+		}
+		console.log('cart:', cart)
 	</script>
 
 </head>

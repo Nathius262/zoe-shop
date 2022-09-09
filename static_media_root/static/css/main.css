@@ -170,6 +170,14 @@ body{
 
 /* cart end */
 
+/* checkout */
+
+.hidden{
+	display: none;
+}
+
+/* checkout end */
+
 /* body end */
 
 /* footer start */

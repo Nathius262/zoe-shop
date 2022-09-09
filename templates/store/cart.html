@@ -50,21 +50,14 @@ cart
 			</div>
 		</div>
 	</div>
+
 	<script>
-
-
-		
-		
-		window.addEventListener('DOMContentLoaded', function(){	cartResponse();		
-		
+		var cart_url_obj = "{% url 'store:cart' %}"		
+		window.addEventListener('DOMContentLoaded', function(){	
+			cartResponse(cart_url_obj);		
 		});
-		/*
-		
-		setInterval(function(){
-			cartResponse()
-		}, 2000);
-		*/
 	</script>
+	
 </div>
 
 

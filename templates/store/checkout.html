@@ -24,48 +24,66 @@ checkout
 
 
 			<div class="container">
-				{% for items in item %}
-				<div class="row align-items-center text-center mb-3">
+				<div id="cartRep">
 				
-					<div class="col col-lg-4 d-none d-md-flex">
-						<img class="cart_item_img" src="{{items.product.product_image_url}}">
-					</div>						
-					<h5 class="col">{{items.product.name}}</h5>
-					<h5 class="col">${{items.product.price}}</h5>
-					<h5 class="col">{{items.quantity}}</h5>
-					<h5 class="col">${{items.get_total}}</h5>
 					
 				</div>
 				<hr>
-				{% endfor %}
 			</div>
 
 			<div class="container nav_items d-block d-md-flex justify-content-between">
-				<h2>Items: {{order.get_cart_items}}</h2>
-				<h2>Total: ${{order.get_cart_total | floatformat:2}}</h2>
+				<h2>Items: <span id="c_item"></span></h2>
+				<h2>Total: $<span id="c_total"></span></h2>
 			</div>
 		</div>
 	</div>
 
 	<div class="container">
-		<div class="card">
-			<div class="row p-4">
-				<input type="text" name="" class="col-md-6" placeholder="Name..">
-				<input type="email" name="" class="col-md-6" placeholder="Email.."> 
-			</div>
+		<div id="form_wrapper">
+			<form id="form">
+				{%csrf_token%}
+				<div class="card">
+					<div id="user_info" class="row p-4">
+						<input type="text" name="name" class="col-md-6" placeholder="Name.." required>
+						<input type="email" name="email" class="col-md-6" placeholder="Email.." required> 
+					</div>
 
-			<h2 class="px-4">Shipping Address</h2>
+					
 
-			<div class="row p-4 pt-0">
-				<input type="text" name="" class="col-6" placeholder="Address..">
-				<input type="text" name="" class="col-6" placeholder="City.."> 
-				<input type="text" name="" class="col-6" placeholder="State..">
-				<input type="text" name="" class="col-6" placeholder="Zipcode.."> 
-			</div>
+					<div class="row p-4 pt-0" id="shipping_items">
+						<h2 class="px-4">Shipping Address</h2>
+						<input type="text" name="address" class="col-6" placeholder="Address.." required>
+						<input type="text" name="city" class="col-6" placeholder="City.." required> 
+						<input type="text" name="state" class="col-6" placeholder="State.." required>
+						<input type="text" name="zipcode" class="col-6" placeholder="Zipcode.."> 
+					</div>
+				</div>
+				<div class="col" id="formbtn" >
+					<button class="btn btn-success col-12 mt-1" type="submit">contine</button>
+				</div>			
+			</form>
 		</div>
-		<div class="col">
-			<button class="btn btn-success col-12 mt-1" type="submit">contine</button>
+
+		<div class="col align-items-center hidden" id="paypalbtn">
+			<small class="fs-3">Paypal</small>
+			<button id="make_pay" class="btn btn-secondary " type="submit">Make payment</button>
 		</div>
-	</div>	
+
+
+	</div>
+
+	<script type="text/javascript">
+		var cart_url_obj = "{% url 'store:checkout' %}"
+		var shipping = "{{order.shipping}}"
+		var total = '{{order.get_cart_total}}'
+		console.log(total)
+
+
+		window.addEventListener('DOMContentLoaded', function(){	
+			cartResponse(cart_url_obj);	
+			shippingData(shipping, total);
+		});	
+		
+	</script>
 </div>
 {%endblock content%}

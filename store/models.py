@@ -35,13 +35,13 @@ class Customer(models.Model):
 	email = models.EmailField(max_length=200, null=True)
 
 	def __str__(self):
-		return self.name
+		return str(self.user)
 
 
 class Product(models.Model):
 	"""docstring for Product"""
 	name = models.CharField(max_length=200, null=True)
-	price = models.FloatField()
+	price = models.DecimalField(max_digits=7, decimal_places=2)
 	digital = models.BooleanField(default=False, null=True, blank=True)
 	product_image = models.ImageField(upload_to=product_image_location, null=True, blank=True)
 
@@ -89,15 +89,43 @@ class Order(models.Model):
 		return f'order_{self.id} by {self.customer}'
 
 	@property
-	def get_cart_total(self):
+	def shipping(self):
+		shipping = False
 		orderitems = self.orderitem_set.all()
-		total = sum([item.get_total for item in orderitems])
+		for i in orderitems:
+			try:
+				if i.product.digital == False:
+					shipping = True
+			except AttributeError:
+				pass
+		return shipping
+	
+
+	@property
+	def get_cart_total(self):
+		total=0
+		try:
+			orderitems = self.orderitem_set.all()
+			# total = sum([item.get_total for item in orderitems])
+
+			for item in orderitems:
+				total += item.get_total
+			
+		except AttributeError :
+			pass
+		
 		return total
 
 	@property
 	def get_cart_items(self):
-		orderitems = self.orderitem_set.all()
-		total = sum([item.quantity for item in orderitems])
+		total=0
+		try:
+			orderitems = self.orderitem_set.all()
+			# total = sum([item.quantity for item in orderitems])
+			for item in orderitems:
+				total += item.quantity
+		except AttributeError :
+			pass
 		return total
 	
 
@@ -110,7 +138,11 @@ class OrderItem(models.Model):
 
 	@property
 	def get_total(self):
-		total = self.product.price * self.quantity
+		total = 0
+		try:
+			total = self.product.price * self.quantity
+		except AttributeError:
+			pass
 		return total
 
 class ShippingAddress(models.Model):
